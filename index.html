@@ -19,7 +19,11 @@
     </header>
 
     <div id="gameArea" class="game-area">
-      <div id="star" class="star">⭐</div>
+     <div id="star" class="star">⭐</div>
+     <div id="bomb" class="bomb" style="display:none;">💣</div>
+
+      <!-- Game Over Overlay -->
+      <div id="gameOver" class="gameOver">Game Over!</div>
     </div>
 
     <div class="controls">
@@ -33,21 +37,22 @@
       <button id="level3Btn">Level 3 (Hart)</button>
     </div>
 
-    <div id="gameOver" class="game-over"></div>
-   <div id="levelPopup" class="popup">
-    <div class="popup-content">
+    <!-- Popup für Level geschafft -->
+    <div id="levelPopup" class="popup">
+      <div class="popup-content">
         <div id="popupText" class="popup-text"></div>
-            <div class="popup-buttons">
-                <button id="popupYes">Ja</button>
-                <button id="popupNo">Nein</button>
-            </div>
+        <div class="popup-buttons">
+          <button id="popupYes">Ja</button>
+          <button id="popupNo">Nein</button>
         </div>
+      </div>
     </div>
 
   </div>
 
   <audio id="clickSound" src="sounds/click.mp3"></audio>
   <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
+  <audio id="bombSound" src="sounds/bomb.mp3"></audio>
   <audio id="gameOverSound" src="sounds/gameover.mp3"></audio>
 
   <script src="script.js"></script>
