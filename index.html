@@ -6,20 +6,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="top-bar">
+    <div class="info">
+      <p>Score: <span id="score">0</span></p>
+      <p>Time: <span id="time">30</span></p>
+      <p>Highscore: <span id="highscore">0</span></p>
+    </div>
 
-<h1>⭐ Fang den Stern ⭐</h1>
+    <div class="buttons">
+      <button id="restartBtn">Neustart</button>
+      <button id="soundBtn">🔊 Sound: AN</button>
+    </div>
+  </div>
 
-<p>Punkte: <span id="score">0</span></p>
-<p>Highscore: <span id="highscore">0</span></p>
-<p>Zeit: <span id="time">30</span> Sekunden</p>
-
-<button id="restartBtn">🔄 Neustart</button>
-<p id="gameOver"></p>
-
-<div id="gameArea">
+  <div id="gameArea">
     <div id="star">⭐</div>
-</div>
+  </div>
+  
+  <div id="gameOver"></div>
+  
+  <audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
+  <audio id="bonusSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="gameOverSound" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
+
 </html>

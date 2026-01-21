@@ -16,6 +16,11 @@
 - Punkte zählen
 - **Highscore** wird gespeichert (im Browser)
 - **Neustart-Button**
+- Sound an/aus Button
+- Unterschiedliche Sounds (jeder 5. Punkt)
+- Stern wird nach 10 / 20 / 30 Punkten schneller
+- Game Over Sound
+
 
 ## 📁 Dateien
 - `index.html` – HTML-Struktur
