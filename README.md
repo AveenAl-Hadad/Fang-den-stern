@@ -36,7 +36,7 @@
 ## 🌍 Spiel online (GitHub Pages)
 Das Spiel ist auch online verfügbar:
 
-**https://AveenAl-Hadad.github.io/fang-den-stern/**
+**https://aveenal-hadad.github.io/Fang-den-stern/**
 
 > Wenn du den Link nicht sehen kannst:
 > 1. Gehe zu **Settings → Pages**
