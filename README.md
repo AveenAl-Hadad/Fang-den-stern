@@ -1,42 +1,25 @@
-# Fang den Stern ⭐
+⭐ Fang den Stern – Klick-Spiel
 
-**Fang den Stern** ist ein kleines Browser-Spiel, das mit **HTML, CSS und JavaScript** entwickelt wurde.
+Ein kleines JavaScript-Klickspiel, bei dem du so viele Sterne wie möglich einsammelst – aber Vorsicht vor der Bombe! 💣
 
-## 🎮 Spielprinzip
-- Ein Stern erscheint zufällig im Spielfeld
-- Du musst den Stern anklicken
-- Für jeden Klick bekommst du **1 Punkt**
-- Das Spiel läuft **30 Sekunden**
-- Danach ist **Game Over**
-- Der Stern bewegt sich automatisch (anfangs langsamer, später schneller)
+Das Spiel wurde mit HTML, CSS und JavaScript umgesetzt und enthält Levels, Sounds und einen Highscore.
 
-## 🔥 Funktionen
-- Timer (30 Sekunden)
-- Stern bewegt sich automatisch
-- Punkte zählen
-- **Highscore** wird gespeichert (im Browser)
-- **Neustart-Button**
-- Sound an/aus Button
-- Unterschiedliche Sounds (jeder 5. Punkt)
-- Stern wird nach 10 / 20 / 30 Punkten schneller
-- Game Over Sound
+🎮 Spielidee
+- Klicke auf den ⭐ Stern, um Punkte zu sammeln
+- Mit steigenden Punkten wird das Spiel schwieriger
+- Ab einem bestimmten Zeitpunkt erscheint eine 💣 Bombe
+- Klickst du auf die Bombe → Game Over
+- Ziel: So viele Punkte wie möglich erreichen
 
-## 🎚️ Level-System (optional)
-- Level 1: Leicht
-- Level 2: Medium
-- Level 3: Hart
-- Die Geschwindigkeit erhöht sich automatisch nach Punkten oder kann über einen Button ausgewählt werden.
-
-## 📁 Dateien
-- `index.html` – HTML-Struktur
-- `style.css` – Design
-- `script.js` – Spiel-Logik
-- `README.md` – Projektbeschreibung
-
-## 🚀 Spiel starten (lokal)
-1. Repository klonen oder herunterladen
-2. `index.html` im Browser öffnen
-3. Spielen 🎮
+🕹️ Features
+✅ 3 Schwierigkeitsstufen (Leicht, Medium, Hart)
+✅ Beweglicher Stern
+✅ Bombe als Hindernis
+✅ Soundeffekte (Klick, Bonus, Game Over)
+✅ Sound an/aus schaltbar
+✅ Timer
+✅ Highscore (LocalStorage)
+✅ Neustart-Button
 
 ## 🌍 Spiel online (GitHub Pages)
 Das Spiel ist auch online verfügbar:
@@ -48,5 +31,45 @@ Das Spiel ist auch online verfügbar:
 - CSS
 - JavaScript
 
+📸 Screenshots
+- Startbildschirm
+- Gameplay
+- Game Over
+
+🧠 Spielregeln (einfach erklärt)
+- Das Spiel startet im Level Leicht
+- Der Stern bewegt sich automatisch
+- Jeder Klick auf den Stern gibt +1 Punkt
+- Die Bombe erscheint:
+- ab Level Medium oder
+- ab einer bestimmten Punktzahl
+- Klick auf die Bombe → Spiel endet sofort
+- Wenn die Zeit abläuft → Game Over
+
+🛠️ Technologien
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- LocalStorage (für Highscore)
+
+▶️ Spiel starten
+- Repository herunterladen oder klonen
+- index.html im Browser öffnen
+- Spielen 🎉
+
+📌 Projektstatus
+🟢 Funktionsfähig
+Mögliche Erweiterungen:
+- Mehr Hindernisse
+- Animationen
+- Mobile Unterstützung
+- Bestenliste
+
+👤 Autorin
+Aveen Al-Hadad
+Spielprojekt JavaScript
+
 ## 📌 Hinweis
 Der Highscore wird im Browser gespeichert. Wenn du den Browser-Cache löschst, wird der Highscore zurückgesetzt.
+
+Viel Spaß beim Spielen ⭐
