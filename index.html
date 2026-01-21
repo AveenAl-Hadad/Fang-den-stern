@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Fang den Stern</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fang den Stern</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="top-bar">
-    <div class="info">
-      <p>Score: <span id="score">0</span></p>
-      <p>Time: <span id="time">30</span></p>
-      <p>Highscore: <span id="highscore">0</span></p>
+  <div class="container">
+    <header class="top-bar">
+      <div class="logo">⭐ Fang den Stern ⭐</div>
+      <div class="stats">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="stat">Time: <span id="time">30</span>s</div>
+        <div class="stat">Level: <span id="levelText">Leicht</span></div>
+        <div class="stat">Highscore: <span id="highscore">0</span></div>
+      </div>
+    </header>
+
+    <div id="gameArea" class="game-area">
+      <div id="star" class="star">⭐</div>
     </div>
 
-    <div class="buttons">
-      <button id="restartBtn">Neustart</button>
+    <div class="controls">
       <button id="soundBtn">🔊 Sound: AN</button>
+      <button id="restartBtn">🔄 Neustart</button>
     </div>
+
+    <div class="level-buttons">
+      <button id="level1Btn">Level 1 (Leicht)</button>
+      <button id="level2Btn">Level 2 (Medium)</button>
+      <button id="level3Btn">Level 3 (Hart)</button>
+    </div>
+
+    <div id="gameOver" class="game-over"></div>
+   <div id="levelPopup" class="popup">
+    <div class="popup-content">
+        <div id="popupText" class="popup-text"></div>
+            <div class="popup-buttons">
+                <button id="popupYes">Ja</button>
+                <button id="popupNo">Nein</button>
+            </div>
+        </div>
+    </div>
+
   </div>
 
-  <div id="gameArea">
-    <div id="star">⭐</div>
-  </div>
-  
-  <div id="gameOver"></div>
-  
-  <audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"></audio>
-  <audio id="bonusSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-  <audio id="gameOverSound" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
+  <audio id="clickSound" src="sounds/click.mp3"></audio>
+  <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
+  <audio id="gameOverSound" src="sounds/gameover.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
-
 </html>

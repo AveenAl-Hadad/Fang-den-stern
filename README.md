@@ -8,7 +8,7 @@
 - Für jeden Klick bekommst du **1 Punkt**
 - Das Spiel läuft **30 Sekunden**
 - Danach ist **Game Over**
-- Der Stern bewegt sich automatisch alle 1 Sekunde (schwieriger)
+- Der Stern bewegt sich automatisch (anfangs langsamer, später schneller)
 
 ## 🔥 Funktionen
 - Timer (30 Sekunden)
@@ -21,6 +21,11 @@
 - Stern wird nach 10 / 20 / 30 Punkten schneller
 - Game Over Sound
 
+## 🎚️ Level-System (optional)
+- Level 1: Leicht
+- Level 2: Medium
+- Level 3: Hart
+- Die Geschwindigkeit erhöht sich automatisch nach Punkten oder kann über einen Button ausgewählt werden.
 
 ## 📁 Dateien
 - `index.html` – HTML-Struktur
@@ -37,12 +42,6 @@
 Das Spiel ist auch online verfügbar:
 
 **https://aveenal-hadad.github.io/Fang-den-stern/**
-
-> Wenn du den Link nicht sehen kannst:
-> 1. Gehe zu **Settings → Pages**
-> 2. Stelle sicher, dass **Branch: main** und **Folder: /root** ausgewählt ist
-> 3. Klicke **Save**
-> 4. Warte 1–2 Minuten
 
 ## 💻 Technologien
 - HTML

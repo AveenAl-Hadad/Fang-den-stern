@@ -2,6 +2,9 @@ let score = 0;
 let timeLeft = 30;
 let gameRunning = true;
 
+let level = 1;
+let autoMove;
+
 const star = document.getElementById("star");
 const scoreText = document.getElementById("score");
 const timeText = document.getElementById("time");
@@ -9,23 +12,36 @@ const gameArea = document.getElementById("gameArea");
 const gameOverText = document.getElementById("gameOver");
 const restartBtn = document.getElementById("restartBtn");
 const highscoreText = document.getElementById("highscore");
+const levelText = document.getElementById("levelText");
 const soundBtn = document.getElementById("soundBtn");
+
+const level1Btn = document.getElementById("level1Btn");
+const level2Btn = document.getElementById("level2Btn");
+const level3Btn = document.getElementById("level3Btn");
+
+const levelPopup = document.getElementById("levelPopup");
+const popupText = document.getElementById("popupText");
+const popupYes = document.getElementById("popupYes");
+const popupNo = document.getElementById("popupNo");
 
 const clickSound = document.getElementById("clickSound");
 const bonusSound = document.getElementById("bonusSound");
 const gameOverSound = document.getElementById("gameOverSound");
 
-// Sound an/aus
 let soundOn = true;
-
 soundBtn.onclick = () => {
     soundOn = !soundOn;
     soundBtn.textContent = soundOn ? "🔊 Sound: AN" : "🔇 Sound: AUS";
 };
 
-// Highscore laden
 let highscore = localStorage.getItem("highscore") || 0;
 highscoreText.textContent = highscore;
+
+function playSound(sound) {
+    if (!soundOn) return;
+    sound.currentTime = 0;
+    sound.play();
+}
 
 function moveStar() {
     if (!gameRunning) return;
@@ -40,49 +56,88 @@ function moveStar() {
     star.style.top = y + "px";
 }
 
-function playSound(sound) {
-    if (!soundOn) return;
-    sound.currentTime = 0;
-    sound.play();
+function setActiveButton(level) {
+  level1Btn.classList.remove("active");
+  level2Btn.classList.remove("active");
+  level3Btn.classList.remove("active");
+
+  if (level === 1) level1Btn.classList.add("active");
+  if (level === 2) level2Btn.classList.add("active");
+  if (level === 3) level3Btn.classList.add("active");
 }
 
-// Klick auf Stern
+function setLevel(newLevel) {
+    level = newLevel;
+    setActiveButton(level);
+    clearInterval(autoMove);
+
+    if (level === 1) {
+        levelText.textContent = "Leicht";
+        timeLeft = 30;
+        autoMove = setInterval(moveStar, 1500);
+    } else if (level === 2) {
+        levelText.textContent = "Medium";
+        timeLeft = 45;
+        autoMove = setInterval(moveStar, 1000);
+    } else if (level === 3) {
+        levelText.textContent = "Hart";
+        timeLeft = 60;
+        autoMove = setInterval(moveStar, 700);
+    }
+
+    timeText.textContent = timeLeft;
+}
+
+level1Btn.onclick = () => setLevel(1);
+level2Btn.onclick = () => setLevel(2);
+level3Btn.onclick = () => setLevel(3);
+
+function showPopup(text) {
+    popupText.textContent = text;
+    levelPopup.style.display = "flex";
+    gameRunning = false;
+    clearInterval(autoMove);
+}
+
+popupYes.onclick = () => {
+    levelPopup.style.display = "none";
+    gameRunning = true;
+
+    if (level === 1) setLevel(2);
+    else if (level === 2) setLevel(3);
+
+    moveStar();
+};
+
+popupNo.onclick = () => {
+    levelPopup.style.display = "none";
+    gameRunning = false;
+    star.style.display = "none";
+    gameOverText.textContent = "Spiel beendet. Punkte: " + score;
+};
+
 star.onclick = () => {
     if (!gameRunning) return;
 
     score++;
     scoreText.textContent = score;
 
-    // Verschiedene Sounds je Punkte
-    if (score % 5 === 0) {
-        playSound(bonusSound); // jeder 5. Punkt = Bonus Sound
-    } else {
-        playSound(clickSound); // normaler Sound
+    if (score % 5 === 0) playSound(bonusSound);
+    else playSound(clickSound);
+
+    if (score === 20 && level === 1) {
+        showPopup("🎉 Level Leicht geschafft! Weiter zu Medium?");
     }
-
-    // Stern wird schneller je mehr Punkte (Stufen)
-    clearInterval(autoMove);
-
-    let speed = 1500; // Standard
-
-    if (score >= 30) {
-        speed = 400;
-    } else if (score >= 20) {
-        speed = 650;
-    } else if (score >= 10) {
-        speed = 900;
+    if (score === 40 && level === 2) {
+        showPopup("🔥 Level Medium geschafft! Weiter zu Hart?");
     }
-
-    autoMove = setInterval(moveStar, speed);
 
     moveStar();
 };
 
-// Stern bewegt sich automatisch (langsamer)
-let autoMove = setInterval(moveStar, 1500);
-
-// Timer
 const timer = setInterval(() => {
+    if (!gameRunning) return;
+
     timeLeft--;
     timeText.textContent = timeLeft;
 
@@ -93,13 +148,8 @@ const timer = setInterval(() => {
         star.style.display = "none";
         gameOverText.textContent = "⏰ Game Over! Punkte: " + score;
 
-        // Game Over Sound
-        if (soundOn) {
-            gameOverSound.currentTime = 0;
-            gameOverSound.play();
-        }
+        playSound(gameOverSound);
 
-        // Highscore speichern
         if (score > highscore) {
             localStorage.setItem("highscore", score);
             highscoreText.textContent = score;
@@ -107,9 +157,9 @@ const timer = setInterval(() => {
     }
 }, 1000);
 
-// Neustart
 restartBtn.onclick = () => {
     location.reload();
 };
 
+setLevel(level);
 moveStar();
