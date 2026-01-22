@@ -1,40 +1,50 @@
 // --------------------
-// 1) Grundwerte
+// Grundwerte
 // --------------------
 let score = 0;
 let timeLeft = 30;
-let gameRunning = true;
 let level = 1;
+let gameRunning = true;
 
 let autoMove;
 let timer;
+let starSpeed = 1500;
+
+let bossLife = 3;
+let highscore = 0;
+let soundOn = true;
 
 // --------------------
-// 2) HTML Elemente
+// Elemente
 // --------------------
 const star = document.getElementById("star");
 const bomb = document.getElementById("bomb");
 const bonus = document.getElementById("bonus");
+const slow = document.getElementById("slow");
+const timePlus = document.getElementById("timePlus");
+const boss = document.getElementById("boss");
 
 const scoreText = document.getElementById("score");
 const timeText = document.getElementById("time");
 const levelText = document.getElementById("levelText");
 const gameArea = document.getElementById("gameArea");
-
 const gameOverText = document.getElementById("gameOver");
+const winMessage = document.getElementById("winMessage");
+
+const soundBtn = document.getElementById("soundBtn");
 const restartBtn = document.getElementById("restartBtn");
 
-const highscoreText = document.getElementById("highscore");
+const level1Btn = document.getElementById("level1Btn");
+const level2Btn = document.getElementById("level2Btn");
+const level3Btn = document.getElementById("level3Btn");
 
 const levelPopup = document.getElementById("levelPopup");
 const popupText = document.getElementById("popupText");
 const popupYes = document.getElementById("popupYes");
 const popupNo = document.getElementById("popupNo");
 
-const winMessage = document.getElementById("winMessage");
 const confettiContainer = document.getElementById("confetti");
 
-// Sounds
 const clickSound = document.getElementById("clickSound");
 const bonusSound = document.getElementById("bonusSound");
 const bombSound = document.getElementById("bombSound");
@@ -42,227 +52,301 @@ const gameOverSound = document.getElementById("gameOverSound");
 const winSound = document.getElementById("winSound");
 
 // --------------------
-// 3) Highscore
+// Highscore laden
 // --------------------
-let highscore = localStorage.getItem("highscore") || 0;
-highscoreText.textContent = highscore;
+highscore = localStorage.getItem("highscore") || 0;
+document.getElementById("highscore").textContent = highscore;
 
 // --------------------
-// 4) Sound Funktion
+// Sound
 // --------------------
-let soundOn = true;
 function playSound(sound) {
-    if (!soundOn) return;
-    sound.currentTime = 0;
-    sound.play();
+  if (!soundOn) return;
+  if (!sound) return;
+  sound.currentTime = 0;
+  sound.play();
 }
 
 // --------------------
-// 5) Confetti
+// Confetti zeigen
 // --------------------
 function showConfetti() {
-    confettiContainer.innerHTML = "";
-    for (let i = 0; i < 100; i++) {
-        const c = document.createElement("div");
-        c.classList.add("confetti-piece");
-        c.style.left = Math.random() * 100 + "vw";
-        c.style.animationDuration = 2 + Math.random() * 3 + "s";
-        c.style.backgroundColor =
-            ["red", "yellow", "blue", "green", "pink"][Math.floor(Math.random() * 5)];
-        confettiContainer.appendChild(c);
-    }
+  const confetti = document.getElementById("confetti");
+  confetti.innerHTML = "";
+
+  const colors = ["#00ff00", "#ffff00", "#0000ff", "#ff00ff", "#ff66cc"]; // grün, gelb, blau, lila, rosa
+
+  for (let i = 0; i < 120; i++) {
+    const piece = document.createElement("div");
+    piece.classList.add("confetti-piece");
+
+    // zufällige Farbe
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    // Startposition oben zufällig
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.top = "-20px";
+
+    // zufällige Größe
+    const size = Math.random() * 10 + 5;
+    piece.style.width = size + "px";
+    piece.style.height = size + "px";
+
+    // zufällige Geschwindigkeit (damit es wie Regen aussieht)
+    const duration = Math.random() * 2 + 2;
+    piece.style.animationDuration = duration + "s";
+
+    confetti.appendChild(piece);
+  }
+
+  // Konfetti nach 3 Sekunden entfernen
+  setTimeout(() => {
+    confetti.innerHTML = "";
+  }, 3000);
 }
 
+
 // --------------------
-// 6) Objekte bewegen
+// Bewegung
 // --------------------
 function moveObjects() {
-    if (!gameRunning) return;
+  if (!gameRunning) return;
 
-    const maxX = gameArea.clientWidth - 50;
-    const maxY = gameArea.clientHeight - 50;
+  const maxX = gameArea.clientWidth - 50;
+  const maxY = gameArea.clientHeight - 50;
 
-    star.style.left = Math.random() * maxX + "px";
-    star.style.top = Math.random() * maxY + "px";
-
-    bomb.style.left = Math.random() * maxX + "px";
-    bomb.style.top = Math.random() * maxY + "px";
-
-    bonus.style.left = Math.random() * maxX + "px";
-    bonus.style.top = Math.random() * maxY + "px";
+  [star, bomb, bonus, slow, timePlus, boss].forEach(el => {
+    if (el.style.display !== "none") {
+      el.style.left = Math.random() * maxX + "px";
+      el.style.top = Math.random() * maxY + "px";
+    }
+  });
 }
 
 // --------------------
-// 7) Timer starten
+// Timer
 // --------------------
 function startTimer() {
-    clearInterval(timer);
-
-    timer = setInterval(() => {
-        if (!gameRunning) return;
-
-        timeLeft--;
-        timeText.textContent = timeLeft;
-
-        if (timeLeft <= 0) endLevelByTime();
-    }, 1000);
-}
-
-// --------------------
-// 8) Zeit abgelaufen
-// --------------------
-function endLevelByTime() {
-    clearInterval(timer);
-    clearInterval(autoMove);
-    gameRunning = false;
-
-    star.style.display = "none";
-    bomb.style.display = "none";
-    bonus.style.display = "none";
-
-    if (level === 1 && score >= 20) {
-        showPopup("🎉 Level Leicht geschafft! Weiter zu Medium?");
-        playSound(winSound);
-    }
-    else if (level === 2 && score >= 40) {
-        showPopup("🔥 Level Medium geschafft! Weiter zu Hart?");
-        playSound(winSound);
-    }
-    else if (level === 3 && score >= 60) {
-        winMessage.style.display = "block";
-        showConfetti();
-        playSound(winSound);
-    }
-    else {
-        gameOverText.style.display = "block";
-        gameOverText.textContent = "💔 Game Over 😢 Punkte: " + score;
-        playSound(gameOverSound);
-    }
-
-    if (score > highscore) {
-        localStorage.setItem("highscore", score);
-        highscoreText.textContent = score;
-    }
-}
-
-// --------------------
-// 9) Level setzen
-// --------------------
-function setLevel(newLevel) {
-    clearInterval(autoMove);
-    clearInterval(timer);
-
-    level = newLevel;
-    gameRunning = true;
-
-    star.style.display = "block";
-    bomb.style.display = "none";
-    bonus.style.display = "none";
-
-    if (level === 1) {
-        levelText.textContent = "Leicht";
-        timeLeft = 30;
-        autoMove = setInterval(moveObjects, 1500);
-    }
-    else if (level === 2) {
-        levelText.textContent = "Medium";
-        timeLeft = 45;
-        autoMove = setInterval(moveObjects, 1000);
-    }
-    else {
-        levelText.textContent = "Hart";
-        timeLeft = 60;
-        autoMove = setInterval(moveObjects, 700);
-    }
-
+  clearInterval(timer);
+  timer = setInterval(() => {
+    if (!gameRunning) return;
+    timeLeft--;
     timeText.textContent = timeLeft;
-    startTimer();
-    moveObjects();
+    if (timeLeft <= 0) endGame(false);
+  }, 1000);
 }
 
 // --------------------
-// 10) Popup
+// Spielende
+// --------------------
+function endGame(win) {
+  gameRunning = false;
+  clearInterval(timer);
+  clearInterval(autoMove);
+
+  star.style.display =
+  bomb.style.display =
+  bonus.style.display =
+  slow.style.display =
+  timePlus.style.display =
+  boss.style.display = "none";
+
+  if (win) {
+    winMessage.style.display = "block";
+    showConfetti();
+    playSound(winSound);
+  } else {
+    gameOverText.style.display = "block";
+    gameOverText.textContent = "💔 Game Over 😢";
+    playSound(gameOverSound);
+  }
+
+  // Highscore speichern
+  if (score > highscore) {
+    highscore = score;
+    localStorage.setItem("highscore", highscore);
+    document.getElementById("highscore").textContent = highscore;
+  }
+}
+
+// --------------------
+// Popup zeigen
 // --------------------
 function showPopup(text) {
-    popupText.textContent = text;
-    levelPopup.style.display = "flex";
-    gameRunning = false;
+  popupText.textContent = text;
+  levelPopup.style.display = "flex";
+  gameRunning = false;
+  clearInterval(autoMove);
+  clearInterval(timer);
 }
+
+// --------------------
+// Level setzen
+// --------------------
+function setLevel(lvl) {
+  clearInterval(autoMove);
+  clearInterval(timer);
+
+  level = lvl;
+  gameRunning = true;
+
+  levelPopup.style.display = "none";
+  gameOverText.style.display = "none";
+  winMessage.style.display = "none";
+
+  star.style.display = "block";
+  bomb.style.display = "none";
+  bonus.style.display = "none";
+  slow.style.display = "none";
+  timePlus.style.display = "none";
+  boss.style.display = "none";
+
+  if (level === 1) {
+    levelText.textContent = "Leicht";
+    timeLeft = 30;
+    starSpeed = 1500;
+  }
+  if (level === 2) {
+    levelText.textContent = "Medium";
+    timeLeft = 45;
+    starSpeed = 1000;
+  }
+  if (level === 3) {
+    levelText.textContent = "Hart";
+    timeLeft = 60;
+    starSpeed = 800;
+    boss.style.display = "block";
+    bossLife = 3;
+  }
+
+  autoMove = setInterval(moveObjects, starSpeed);
+  timeText.textContent = timeLeft;
+  startTimer();
+  moveObjects();
+}
+
+// --------------------
+// Level geschafft prüfen
+// --------------------
+function checkLevelSuccess() {
+  if (level === 1 && score >= 20) {
+    showPopup("🎉 Level Leicht geschafft! Weiter zu Medium?");
+    playSound(winSound);
+    showConfetti();
+  } else if (level === 2 && score >= 40) {
+    showPopup("🔥 Level Medium geschafft! Weiter zu Hart?");
+    playSound(winSound);
+    showConfetti();
+  } else if (level === 3 && score >= 60) {
+    winMessage.style.display = "block";
+    showConfetti();
+    playSound(winSound);
+  }
+}
+
+
+// --------------------
+// Klicks
+// --------------------
+star.onclick = () => {
+  if (!gameRunning) return;
+
+  score++;
+  scoreText.textContent = score;
+
+  // Objekte anzeigen
+  if (score >= 5) bomb.style.display = "block";
+  if (score >= 10) bonus.style.display = "block";
+  if (score >= 15) slow.style.display = "block";
+  if (score >= 20) timePlus.style.display = "block";
+
+  playSound(clickSound);
+  moveObjects();
+   // ✔️ Level prüfen
+  checkLevelSuccess();
+
+};
+
+// Bonus
+bonus.onclick = () => {
+  if (!gameRunning) return;
+  score += 2;
+  scoreText.textContent = score;
+  bonus.style.display = "none";
+  playSound(bonusSound);
+
+  // ✔️ Level prüfen
+  checkLevelSuccess();
+};
+
+// Slow Powerup
+slow.onclick = () => {
+  if (!gameRunning) return;
+  slow.style.display = "none";
+
+  clearInterval(autoMove);
+  autoMove = setInterval(moveObjects, 2500);
+
+  setTimeout(() => {
+    clearInterval(autoMove);
+    autoMove = setInterval(moveObjects, starSpeed);
+  }, 5000);
+};
+
+// Time Plus
+timePlus.onclick = () => {
+  if (!gameRunning) return;
+  timeLeft += 5;
+  timeText.textContent = timeLeft;
+  timePlus.style.display = "none";
+};
+
+// Boss
+boss.onclick = () => {
+  if (!gameRunning) return;
+  if (level !== 3) return;
+
+  bossLife--;
+  if (bossLife <= 0) endGame(true);
+};
+
+// Bombe klicken = Game Over
+bomb.onclick = () => {
+  if (!gameRunning) return;
+
+  playSound(bombSound);
+  endGame(false);
+};
+
+// --------------------
+// BUTTONS 
+// --------------------
+soundBtn.onclick = () => {
+  soundOn = !soundOn;
+  soundBtn.textContent = soundOn ? "🔊 Sound: AN" : "🔇 Sound: AUS";
+};
+
+restartBtn.onclick = () => {
+  location.reload();
+};
+
+level1Btn.onclick = () => setLevel(1);
+level2Btn.onclick = () => setLevel(2);
+level3Btn.onclick = () => setLevel(3);
 
 // Popup Buttons
 popupYes.onclick = () => {
-    levelPopup.style.display = "none";
-    if (level === 1) setLevel(2);
-    else if (level === 2) setLevel(3);
+  levelPopup.style.display = "none";
+  if (level === 1) setLevel(2);
+  else if (level === 2) setLevel(3);
 };
 
 popupNo.onclick = () => {
-    levelPopup.style.display = "none";
-    gameOverText.style.display = "block";
-    gameOverText.textContent = "Spiel beendet. Punkte: " + score;
+  levelPopup.style.display = "none";
+  endGame(false);
 };
 
 // --------------------
-// 11) Klick-Events
-// --------------------
-star.onclick = () => {
-    if (!gameRunning) return;
-
-    score++;
-    scoreText.textContent = score;
-
-    if (score >= 10) {
-        bomb.style.display = "block";
-        bonus.style.display = "block";
-    }
-
-    playSound(score % 5 === 0 ? bonusSound : clickSound);
-
-    if (score >= 20 && level === 1) {
-        showPopup("🎉 Level Leicht geschafft! Weiter zu Medium?");
-        playSound(winSound);
-    }
-    if (score >= 40 && level === 2) {
-        showPopup("🔥 Level Medium geschafft! Weiter zu Hart?");
-        playSound(winSound);
-    }
-
-    moveObjects();
-};
-
-bonus.onclick = () => {
-    if (!gameRunning) return;
-
-    score += 2;
-    scoreText.textContent = score;
-    playSound(bonusSound);
-    bonus.style.display = "none";
-    moveObjects();
-};
-
-bomb.onclick = () => {
-    if (!gameRunning) return;
-
-    gameRunning = false;
-    clearInterval(autoMove);
-    clearInterval(timer);
-
-    star.style.display = "none";
-    bomb.style.display = "none";
-
-    gameOverText.style.display = "block";
-    gameOverText.textContent = "💥 Game Over! Bombe getroffen 😢";
-
-    playSound(bombSound);
-    setTimeout(() => playSound(gameOverSound), 400);
-};
-
-// --------------------
-// 12) Neustart
-// --------------------
-restartBtn.onclick = () => location.reload();
-
-// --------------------
-// 13) Spiel starten
+// Start
 // --------------------
 setLevel(1);

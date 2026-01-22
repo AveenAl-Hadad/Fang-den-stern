@@ -1,30 +1,55 @@
 ⭐ Fang den Stern – Klick-Spiel
 
-Ein kleines JavaScript-Klickspiel, bei dem du so viele Sterne wie möglich einsammelst – aber Vorsicht vor der Bombe! 💣
-
-Das Spiel wurde mit HTML, CSS und JavaScript umgesetzt und enthält Levels, Sounds und einen Highscore.
+Ein einfaches Browser-Spiel, „Fang den Stern“ ist ein einfaches Klickspiel, bei dem du Sterne fangen musst. Je mehr Sterne du klickst, desto höher wird dein Score. Aber Achtung: Bomben und Power-Ups können das Spiel beeinflussen!
 
 🎮 Spielidee
-- Klicke auf den ⭐ Stern, um Punkte zu sammeln
-- Mit steigenden Punkten wird das Spiel schwieriger
-- Ab einem bestimmten Zeitpunkt erscheint eine 💣 Bombe
-- Klickst du auf die Bombe → Game Over
-- Ziel: So viele Punkte wie möglich erreichen
+- Du musst den **Stern** klicken.
+- Bei bestimmten Punkten erscheinen Power-Ups:
+  - 💣 **Bomben** (ab 5 Punkten)
+  - 💎 **Bonus** (ab 10 Punkten)
+  - ⚡ **Langsamer Stern** (ab 15 Punkten)
+  - ⏱️ **+5 Sekunden** (ab 20 Punkten)
+- Im **Hard-Level** erscheint ein **Boss 👾**, den du mehrfach klicken musst.
+- Wenn du das Level schaffst, erscheint eine Gewinn-Nachricht + **Konfetti-Regen** 🌈
 
-🕹️ Features
-✅ 3 Schwierigkeitsstufen (Leicht, Medium, Hart)
-✅ Beweglicher Stern
-✅ Bombe als Hindernis
-✅ Soundeffekte (Klick, Bonus, Game Over)
-✅ Sound an/aus schaltbar
-✅ Timer
-✅ Highscore (LocalStorage)
-✅ Neustart-Button
+Erreiche die Zielpunkte für jedes Level
+🧠 Spielregeln (einfach erklärt)
+- Das Spiel startet im Level „Leicht“
+- Der Stern bewegt sich automatisch
+- Jeder Klick auf den Stern gibt +1 Punkt
+- Ab 5 Punkten erscheint eine Bombe
+- Klick auf die Bombe → Spiel endet sofort
+- Wenn die Zeit abläuft → Game Over
+- Ab 20 Punkten hast du das Level „Leicht“ geschafft
+- Danach kannst du entscheiden, ob du weiter im Medium Level spielen willst
+- Ab 40 Punkten hast du das Level „Medium“ geschafft
+- Danach kannst du entscheiden, ob du weiter im Hard Level spielen willst
+- Ab 60 Punkten hast du das Level „Hard“ geschafft
+- Beim Gewinnen gibt es eine Gewinn-Nachricht + Konfetti-Regen
+- Im Hard-Level erscheint ein Boss 👾, den du 3x klicken musst, um zu gewinnen
 
-## 🌍 Spiel online (GitHub Pages)
-Das Spiel ist auch online verfügbar:
+🕹️ Wie man spielt
+- Klick auf den Stern
+- Sammle Punkte
+- Vermeide die Bombe
+- Nutze Power-Ups
 
-**https://aveenal-hadad.github.io/Fang-den-stern/**
+🧩 Level & Zielpunkte
+Level	Zielpunkte	Zeit
+----------------------------------
+Leicht	20 Punkte	30 Sekunden
+Medium	40 Punkte	45 Sekunden
+Hart	60 Punkte	60 Sekunden
+
+🎯 Power-Ups
+Symbol	  Effekt
+---------------------------
+💎	     +2 Punkte
+⚡	    Stern wird langsamer
+⏱️	     +5 Sekunden Zeit
+🎉 Konfetti-Effekt (Gewonnen)
+
+🎉 Konfetti-Effekt (Gewonnen): Wenn du ein Level schaffst, erscheint ein bunter Konfetti-Regen.
 
 ## 💻 Technologien
 - HTML
@@ -36,34 +61,19 @@ Das Spiel ist auch online verfügbar:
 - Gameplay
 - Game Over
 
-🧠 Spielregeln (einfach erklärt)
-- Das Spiel startet im Level Leicht
-- Der Stern bewegt sich automatisch
-- Jeder Klick auf den Stern gibt +1 Punkt
-- Die Bombe erscheint:
-- ab Level Medium oder
-- ab einer bestimmten Punktzahl
-- Klick auf die Bombe → Spiel endet sofort
-- Wenn die Zeit abläuft → Game Over
-
 🛠️ Technologien
 - HTML5
 - CSS3
 - JavaScript (Vanilla JS)
 - LocalStorage (für Highscore)
 
-▶️ Spiel starten
-- Repository herunterladen oder klonen
-- index.html im Browser öffnen
-- Spielen 🎉
+## 🌍 Spiel online (GitHub Pages)
+Das Spiel ist auch online verfügbar:
 
-📌 Projektstatus
-🟢 Funktionsfähig
-Mögliche Erweiterungen:
-- Mehr Hindernisse
-- Animationen
-- Mobile Unterstützung
-- Bestenliste
+**https://aveenal-hadad.github.io/Fang-den-stern/**
+
+oder 🚀 Start: 
+Einfach die index.html im Browser öffnen.
 
 👤 Autorin
 Aveen Al-Hadad
