@@ -38,10 +38,32 @@ const bonusSound = document.getElementById("bonusSound");
 const gameOverSound = document.getElementById("gameOverSound");
 const bombSound = document.getElementById("bombSound");
 
+const winMessage = document.getElementById("winMessage");
+const confettiContainer = document.getElementById("confetti");
+const winSound = document.getElementById("winSound");
 
 
 // --------------------
-// 3) Sound ein/aus
+// 3) confitte zeigen
+// --------------------
+
+function showConfetti() {
+  confettiContainer.innerHTML = "";
+  for (let i = 0; i < 100; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti-piece");
+
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
+    confetti.style.backgroundColor =
+      ["red", "yellow", "blue", "green", "pink"][Math.floor(Math.random() * 5)];
+
+    confettiContainer.appendChild(confetti);
+  }
+}
+
+// --------------------
+// 4) Sound ein/aus
 // --------------------
 let soundOn = true; // Standard: Sound an
 
@@ -52,14 +74,14 @@ soundBtn.onclick = () => {
 
 
 // --------------------
-// 4) Highscore laden
+// 5) Highscore laden
 // --------------------
 let highscore = localStorage.getItem("highscore") || 0; // wenn kein Highscore: 0
 highscoreText.textContent = highscore;
 
 
 // --------------------
-// 5) Funktion um Sound zu spielen
+// 6) Funktion um Sound zu spielen
 // --------------------
 function playSound(sound) {
     if (!soundOn) return; // wenn Sound aus, dann nicht spielen
@@ -68,8 +90,9 @@ function playSound(sound) {
 }
 
 
+
 // --------------------
-// 6) Stern + Bombe bewegen
+// 7) Stern + Bombe bewegen
 // --------------------
 function moveObjects() {
     if (!gameRunning) return; // wenn Spiel gestoppt ist, nicht bewegen
@@ -92,7 +115,7 @@ function moveObjects() {
 
 
 // --------------------
-// 7) Level Buttons aktiv machen
+// 8) Level Buttons aktiv machen
 // --------------------
 function setActiveButton(level) {
   level1Btn.classList.remove("active");
@@ -106,7 +129,7 @@ function setActiveButton(level) {
 
 
 // --------------------
-// 8) Level setzen (leicht/medium/hart)
+// 9) Level setzen (leicht/medium/hart)
 // --------------------
 function setLevel(newLevel) {
     level = newLevel;
@@ -134,7 +157,7 @@ function setLevel(newLevel) {
 
 
 // --------------------
-// 9) Level Buttons Click
+// 10) Level Buttons Click
 // --------------------
 level1Btn.onclick = () => setLevel(1);
 level2Btn.onclick = () => setLevel(2);
@@ -142,7 +165,7 @@ level3Btn.onclick = () => setLevel(3);
 
 
 // --------------------
-// 10) Popup zeigen (Level geschafft)
+// 11) Popup zeigen (Level geschafft)
 // --------------------
 function showPopup(text) {
     popupText.textContent = text;
@@ -153,7 +176,7 @@ function showPopup(text) {
 
 
 // --------------------
-// 11) Popup Buttons
+// 12) Popup Buttons
 // --------------------
 popupYes.onclick = () => {
     levelPopup.style.display = "none";
@@ -175,7 +198,7 @@ popupNo.onclick = () => {
 
 
 // --------------------
-// 12) Stern klicken
+// 13) Stern klicken
 // --------------------
 star.onclick = () => {
     if (!gameRunning) return; // wenn Spiel stop, nix passiert
@@ -194,9 +217,11 @@ star.onclick = () => {
     // Level fertig Popup
     if (score === 20 && level === 1) {
         showPopup("🎉 Level Leicht geschafft! Weiter zu Medium?");
+        playSound(winSound); 
     }
     if (score === 40 && level === 2) {
         showPopup("🔥 Level Medium geschafft! Weiter zu Hart?");
+        playSound(winSound); 
     }
 
     moveObjects(); // nach Klick sofort bewegen
@@ -204,7 +229,7 @@ star.onclick = () => {
 
 
 // --------------------
-// 13) Bombe klicken (Game Over)
+// 14) Bombe klicken (Game Over)
 // --------------------
 bomb.onclick = () => {
     if (!gameRunning) return;
@@ -234,7 +259,7 @@ bomb.onclick = () => {
 
 
 // --------------------
-// 14) Timer (Zeit runterzählen)
+// 15) Timer (Zeit runterzählen)
 // --------------------
 const timer = setInterval(() => {
     if (!gameRunning) return;
@@ -246,13 +271,23 @@ const timer = setInterval(() => {
         clearInterval(timer);
         clearInterval(autoMove);
         gameRunning = false;
-
         star.style.display = "none";
         bomb.style.display = "none";
 
+         if (score >= 60) {
+            gameRunning = false;
+            star.style.display = "none";
+            bomb.style.display = "none";            
+            winMessage.style.display = "block";
+            // 🎉 GEWONNEN
+            showConfetti();
+            playSound(winSound); // 🔊 Gewinn-Sound
+        } else {
+        // ❌ VERLOREN
         gameOverText.style.display = "block";
-        gameOverText.textContent = "⏰ Game Over! Punkte: " + score;
+        gameOverText.textContent = "💔 Game Over! Du hast verloren 😢 Punkte: " + score;
         playSound(gameOverSound);
+         }
 
         // Highscore speichern
         if (score > highscore) {
@@ -264,7 +299,7 @@ const timer = setInterval(() => {
 
 
 // --------------------
-// 15) Neustart
+// 16) Neustart
 // --------------------
 restartBtn.onclick = () => {
     location.reload(); // Seite neu laden
@@ -272,7 +307,7 @@ restartBtn.onclick = () => {
 
 
 // --------------------
-// 16) Spiel starten
+// 17) Spiel starten
 // --------------------
 setLevel(level);
 
